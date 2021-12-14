@@ -6,7 +6,7 @@ import avalanche.models as avl_models
 import torch
 from pytorchcv.model_provider import get_model as ptcv_get_model
 from torch.nn.modules.loss import CrossEntropyLoss
-from torchvision import models, transforms
+from torchvision import transforms
 
 from . import strategy_builder
 

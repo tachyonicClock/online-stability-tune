@@ -2,7 +2,6 @@ from typing import Sequence
 
 import click
 import experiment_cli as cli
-from helper.notify import notify_me
 
 LOGDIR = "tb_data"
 
@@ -181,7 +180,6 @@ def run_batch(base_cmd: str, commands: Sequence[str], msg:str=""):
     """Run a batch of commands"""
     for cmd in commands:
         run(base_cmd + " " + cmd)
-    notify_me(f"Batch Complete: {msg}")
 
 def run(command: str):
     """Run a cli command"""

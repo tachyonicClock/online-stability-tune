@@ -2,14 +2,10 @@
 Responsible for creating strategies and logging
 """
 import copy
-import gc
-from subprocess import run
-
-from typing import Any, Type, Union
 from datetime import datetime
+from typing import Any, Type, Union
 
-from torch import nn, cuda
-from torch.optim.optimizer import Optimizer
+from algorithms.ost import SemiOnlineStabilityTuning, StabilityPolicy
 from avalanche.benchmarks.scenarios.generic_definitions import ScenarioStream
 from avalanche.evaluation import metrics as avl_metrics
 from avalanche.logging import InteractiveLogger
@@ -17,12 +13,12 @@ from avalanche.training.plugins import EvaluationPlugin
 from avalanche.training.plugins.replay import ReplayPlugin
 from avalanche.training.storage_policy import ExperienceBalancedBuffer
 from avalanche.training.strategies.base_strategy import BaseStrategy
-
-from metrics.per_class_accuracy import AccuracyOnTrainedClasses 
 from metrics.cost_metrics import COSTMetric
-from helper.strategy import Strategy, LoggerWithNotes
+from metrics.per_class_accuracy import AccuracyOnTrainedClasses
+from torch import cuda, nn
+from torch.optim.optimizer import Optimizer
 
-from algorithms.ost import SemiOnlineStabilityTuning, StabilityPolicy
+from helper.strategy import LoggerWithNotes, Strategy
 
 
 def new_full_label(label: str, params: dict, has_time:bool = True) -> str:

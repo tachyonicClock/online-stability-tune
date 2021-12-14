@@ -1,22 +1,15 @@
 import copy
-from typing import Sequence, Union
-from avalanche.benchmarks.scenarios.generic_definitions import Experience
+
 from avalanche.training.plugins.clock import Clock
 from avalanche.training.plugins.lwf import LwFPlugin
-from avalanche.training.plugins.synaptic_intelligence import SynapticIntelligencePlugin
-from avalanche.training.strategies.strategy_wrappers import Naive, SynapticIntelligence
-from algorithms.ost import SemiOnlineStabilityTuning
+from avalanche.training.plugins.synaptic_intelligence import \
+    SynapticIntelligencePlugin
+from avalanche.training.strategies.strategy_wrappers import (
+    Naive, SynapticIntelligence)
 from strategies.ewc import EWC, EWCPlugin
-from strategies.lwf import LwF
 
+from algorithms.ost import SemiOnlineStabilityTuning
 
-def get_tuner(strategy_type):
-    tuners = {
-        EWC: EWCTuner,
-        SynapticIntelligence: SITuner,
-        LwF: LWFTuner
-    }
-    return tuners[strategy_type]
 
 class LWFTuner(SemiOnlineStabilityTuning):
     """Learning Without Forgetting Semi-Online Stability Tuning"""

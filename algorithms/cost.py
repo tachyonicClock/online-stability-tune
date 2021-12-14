@@ -238,96 +238,10 @@ class EWCCyberneticOST(AbstractCyberneticOST):
     def get_stability(self) -> float:
         return max(self.ewc.ewc_lambda, 0)
 
-
-class GEMCyberneticOST(AbstractCyberneticOST):
-    """
-    Cybernetic Online Stability Tuner, tunes stability during training for 
-    Gradient Episodic Memory (GEM) strategy.
-    """
-
-    def __init__(self, model: Module,
-                 optimizer: Optimizer,
-                 criterion,
-                 patterns_per_exp: int,
-                 memory_strength: float,
-                 reference_strategy: BaseStrategy,
-                 cost_params: dict = None,
-                 train_mb_size: int = 1, train_epochs: int = 1,
-                 eval_mb_size: int = None, device=None,
-                 plugins: Optional[List[StrategyPlugin]] = None,
-                 evaluator: EvaluationPlugin = default_logger, eval_every=-1):
-
-        self.reference_strategy = ReferenceStrategy(reference_strategy)
-        self.mb_accuracy = MBAccuracy()
-
-        self.gem = avl_plugins.GEMPlugin(patterns_per_exp, memory_strength)
-
-        self.controller = COSTControl(**cost_params)
-        plugins = [self.mb_accuracy, self.controller,
-                   self.reference_strategy, self.gem, *plugins]
-
-        super().__init__(
-            model, optimizer, criterion,
-            train_mb_size=train_mb_size, train_epochs=train_epochs,
-            eval_mb_size=eval_mb_size, device=device, plugins=plugins,
-            evaluator=evaluator, eval_every=eval_every)
-
-    def get_intransigence(self) -> float:
-        return self.reference_strategy.mb_accuracy.result() - self.mb_accuracy.result()
-
-    def set_stability(self, stability: float):
-        self.gem.memory_strength = min(max(stability, 0), 1)
-
-    def get_stability(self) -> float:
-        return self.gem.memory_strength
-
-
-class LFLCyberneticOST(AbstractCyberneticOST):
-    """
-    Cybernetic Online Stability Tuner, tunes stability during training for 
-    Less Forgetful Learning
-    """
-
-    def __init__(self, model: Module,
-                 optimizer: Optimizer,
-                 criterion,
-                 lambda_e: float,
-                 reference_strategy: BaseStrategy,
-                 cost_params: dict = None,
-                 train_mb_size: int = 1, train_epochs: int = 1,
-                 eval_mb_size: int = None, device=None,
-                 plugins: Optional[List[StrategyPlugin]] = None,
-                 evaluator: EvaluationPlugin = default_logger, eval_every=-1):
-
-        self.reference_strategy = ReferenceStrategy(reference_strategy)
-        self.mb_accuracy = MBAccuracy()
-
-        self.lfl = avl_plugins.LFLPlugin(lambda_e)
-
-        self.controller = COSTControl(**cost_params)
-        plugins = [self.mb_accuracy, self.controller,
-                   self.reference_strategy, self.lfl, *plugins]
-
-        super().__init__(
-            model, optimizer, criterion,
-            train_mb_size=train_mb_size, train_epochs=train_epochs,
-            eval_mb_size=eval_mb_size, device=device, plugins=plugins,
-            evaluator=evaluator, eval_every=eval_every)
-
-    def get_intransigence(self) -> float:
-        return self.reference_strategy.mb_accuracy.result() - self.mb_accuracy.result()
-
-    def set_stability(self, stability: float):
-        self.lfl.lambda_e = max(stability, 0)
-
-    def get_stability(self) -> float:
-        return self.lfl.lambda_e
-
-
 class LRCyberneticOST(AbstractCyberneticOST):
     """
     Cybernetic Online Stability Tuner, tunes stability during training for
-    Learning Rate
+    learning Rate
     """
 
     def __init__(self, model: Module,
@@ -388,20 +302,6 @@ class PIDController():
         self.derivative = (error-self.last_error)/delta_t
         self.last_error = error
         return self.kp*error + self.ki*self.integral + self.kd*self.derivative
-
-
-class LinearControl(PIDController):
-    """Linearly increase stability"""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    gradient: float = 2.5
-
-    def update(self, input_signal: float, delta_t: float):
-        """Just increase stability by a set amount. This is brain dead"""
-        return self.gradient
-
 
 class COSTControl(StrategyPlugin):
     """Wraps PIDController to update stability"""

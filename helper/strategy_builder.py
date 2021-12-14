@@ -18,11 +18,11 @@ from avalanche.training.plugins.replay import ReplayPlugin
 from avalanche.training.storage_policy import ExperienceBalancedBuffer
 from avalanche.training.strategies.base_strategy import BaseStrategy
 
-from moacl.metrics.per_class_accuracy import AccuracyOnTrainedClasses 
-from moacl.metrics.cost_metrics import COSTMetric
-from moacl.helper.strategy import Strategy, LoggerWithNotes
+from metrics.per_class_accuracy import AccuracyOnTrainedClasses 
+from metrics.cost_metrics import COSTMetric
+from helper.strategy import Strategy, LoggerWithNotes
 
-from moacl.algorithms.ost import SemiOnlineStabilityTuning, StabilityPolicy
+from algorithms.ost import SemiOnlineStabilityTuning, StabilityPolicy
 
 
 def new_full_label(label: str, params: dict, has_time:bool = True) -> str:

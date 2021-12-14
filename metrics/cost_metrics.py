@@ -1,6 +1,6 @@
 from avalanche.evaluation import PluginMetric
 from avalanche.evaluation.metric_results import MetricValue
-from moacl.algorithms.cost import AbstractCyberneticOST
+from algorithms.cost import AbstractCyberneticOST
 
 class COSTMetric(PluginMetric[float]):
     def __init__(self):

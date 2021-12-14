@@ -3,7 +3,7 @@ import copy
 from abc import ABC, abstractmethod
 from typing import Optional, Sequence, Union
 from avalanche.benchmarks.scenarios.generic_definitions import Experience
-from moacl.helper.strategy import LoggerWithNotes, Strategy
+from helper.strategy import LoggerWithNotes, Strategy
 
 
 class StabilityPolicy(ABC):

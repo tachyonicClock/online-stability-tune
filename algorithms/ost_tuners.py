@@ -5,9 +5,9 @@ from avalanche.training.plugins.clock import Clock
 from avalanche.training.plugins.lwf import LwFPlugin
 from avalanche.training.plugins.synaptic_intelligence import SynapticIntelligencePlugin
 from avalanche.training.strategies.strategy_wrappers import Naive, SynapticIntelligence
-from moacl.algorithms.ost import SemiOnlineStabilityTuning
-from moacl.strategies.ewc import EWC, EWCPlugin
-from moacl.strategies.lwf import LwF
+from algorithms.ost import SemiOnlineStabilityTuning
+from strategies.ewc import EWC, EWCPlugin
+from strategies.lwf import LwF
 
 
 def get_tuner(strategy_type):

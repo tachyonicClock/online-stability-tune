@@ -9,9 +9,9 @@ from avalanche.training.plugins.evaluation import (EvaluationPlugin,
                                                    default_logger)
 from avalanche.training.plugins.strategy_plugin import StrategyPlugin
 from avalanche.training.strategies.base_strategy import BaseStrategy
-from moacl.helper.strategy import Strategy
-from moacl.strategies.ewc import EWCPlugin
-from moacl.strategies.lwf import LwFPlugin
+from helper.strategy import Strategy
+from strategies.ewc import EWCPlugin
+from strategies.lwf import LwFPlugin
 from torch.nn import Module
 from torch.optim import Optimizer
 

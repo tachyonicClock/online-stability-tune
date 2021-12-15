@@ -13,6 +13,10 @@ CIFAR_LR      = 0.005
 CORE_LR       = 0.001
 
 # Grid Search Definition
+EWC_LAMBDAS = [2_000, 4_000, 8_000, 16_000, 32_000, 64_000, 128_000, 256_000]
+SI_LAMBDAS  = [1_000, 2_000, 4_000, 8_000, 16_000, 32_000, 64_000, 128_000]
+LWF_LAMBDAS = [0.5, 1, 2, 4, 8, 16, 32, 64, 128]
+
 EWC_P_GAINS     =  [5_000, 10_000] 
 SI_P_GAINS      =  [2_000, 2_000]
 LWF_P_GAINS     =  [1, 2]
@@ -23,7 +27,7 @@ SET_POINTS   = [0.1, 0.2, 0.3, 0.4]
 
 def mnist_multirun():
     """
-    Run n_runs of MNIST experiments
+    Run MNIST experiments. Parameters are picked from the best results in grid search
     """
     batch = [
         # Naive
@@ -58,7 +62,7 @@ def mnist_multirun():
 
 def cifar_multirun():
     """
-    Run x10 CIFAR experiments
+    Run x10 CIFAR experiments. Parameters are picked from the best results in grid search
     """
     batch = [
         # Naive
@@ -89,7 +93,7 @@ def cifar_multirun():
 
 def core_multirun():
     """
-    Run x10 CORE experiments
+    Run CORE experiments. Parameters are picked from the best results in grid search
     """
     batch = [
         # Naive
@@ -122,15 +126,13 @@ def parameter_search():
     """
     Run grid-search
     """
-    ewc_lambdas = [2_000, 4_000, 8_000, 16_000, 32_000, 64_000, 128_000, 256_000]
-    si_lambdas  = [1_000, 2_000, 4_000, 8_000, 16_000, 32_000, 64_000, 128_000]
-    lwf_lambdas = [0.5, 1, 2, 4, 8, 16, 32, 64, 128]
+
     naive = []
-    for ewc_lambda in ewc_lambdas:
+    for ewc_lambda in EWC_LAMBDAS:
         naive.append(f"ewc --ewc-lambda {ewc_lambda} constant")
-    for si_lambda in si_lambdas:
+    for si_lambda in SI_LAMBDAS:
         naive.append(f"si --si-lambda {si_lambda} constant")
-    for lwf_lambda in lwf_lambdas:
+    for lwf_lambda in LWF_LAMBDAS:
         naive.append(f"lwf --lwf-lambda {lwf_lambda} constant")
 
     cost = []
@@ -139,7 +141,7 @@ def parameter_search():
             cost.append(f"ewc --ewc-lambda 0 cybernetic-tune -p {p_gain} -sp {sp}")
         for p_gain in LWF_P_GAINS:
             cost.append(f"lwf --lwf-lambda 0 cybernetic-tune -p {p_gain} -sp {sp}")
-        for p_gain in EWC_P_GAINS:
+        for p_gain in SI_P_GAINS:
             cost.append(f"si  --si-lambda  0 cybernetic-tune -p  {p_gain} -sp {sp}")
         for p_gain in COST_LR_P_GAINS:
             cost.append(f"naive cybernetic-tune -p {p_gain} -sp {sp}")
@@ -193,7 +195,8 @@ def run(command: str):
 @click.option('--cifar', default=False)
 @click.option('--logdir', required=True)
 def main(logdir: str, grid_search: bool, mnist: bool, cifar: bool, core: bool):
-    LOGDIR=logdir
+    global LOGDIR 
+    LOGDIR = logdir
     if grid_search:
         parameter_search()
     if mnist:

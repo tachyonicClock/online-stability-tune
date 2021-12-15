@@ -13,9 +13,6 @@ class COSTMetric(PluginMetric[float]):
     def result(self) -> float:
         return self._current_penalty
 
-    # def after_eval_iteration(self, strategy):
-        # self.x_coord += 1
-
     def after_training_iteration(self, strategy) -> None:
         
         if not isinstance(strategy, AbstractCyberneticOST):
@@ -45,4 +42,4 @@ class COSTMetric(PluginMetric[float]):
         ]
 
     def __str__(self):
-        return "CEWCMetric"
+        return "COSTMetric"

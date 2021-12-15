@@ -55,8 +55,6 @@ class ReferenceStrategy(StrategyPlugin):
 
     def before_training_exp(self, strategy: 'BaseStrategy', **kwargs):
         self.strategy.experience = strategy.experience
-        # This is important! Reseting makes the comparison more fair
-        # self.strategy.model = copy.deepcopy(strategy.model)
         self.strategy.model_adaptation()
         self.strategy.make_optimizer()
 

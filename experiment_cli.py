@@ -53,8 +53,6 @@ COST_TUNERS = {
     "ewc": cost.EWCCyberneticOST,
     "lwf": cost.LwFCyberneticOST,
     "si": cost.SICyberneticOST,
-    "gem": cost.GEMCyberneticOST,
-    "lfl": cost.LFLCyberneticOST,
     "naive": cost.LRCyberneticOST 
 }
 
@@ -207,9 +205,8 @@ def constant(ctx):
               help="Speed of exponential decay, controls the precision of the search")
 @click.option("-dm", "--drop-margin", default=0.1, show_default=True,
               help="Governs how much intransigence is acceptable")
-@click.option("-lr", "--decay-lr", default=None, help="Set the learning rate of the tuned strategy")
 @click.pass_context
-def decay(ctx, decay_factor, drop_margin, decay_lr):
+def decay(ctx, decay_factor, drop_margin):
     """
     Decay stability
 
@@ -232,10 +229,6 @@ def decay(ctx, decay_factor, drop_margin, decay_lr):
 
     strategy = build_tuning_strategy(
         TUNERS[builder.get_label()], builder, reference, tuning_policy, ctx.obj.tb_logdir)
-
-    if decay_lr:
-        assert builder.get_label() == "naive", "Learning rate can only be set for learning rate decay"
-        strategy.set_stability(float(decay_lr))
 
     pretty_print_strategy({
         "underlying": builder.get_hyper_parameters(),

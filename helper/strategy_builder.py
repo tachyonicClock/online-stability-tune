@@ -42,7 +42,7 @@ class StrategyRunner():
         self.eval_every = eval_every
 
     def run(self, *strategies):
-        """Run one or more stratagies on a scenario"""
+        """Run one or more strategies on a scenario"""
         n_experiences = self.scenario.n_experiences
         for index, experience in enumerate(self.scenario.train_stream):
 
@@ -111,7 +111,7 @@ class StrategyBuilder():
         return self
 
     def add_replay(self, mem_size):
-        """Add a replay method to constructed stratagies"""
+        """Add a replay method to constructed strategies"""
         self._mem_size = mem_size
         return self
 
@@ -149,7 +149,7 @@ class StrategyBuilder():
         return self
 
     def get_hyper_parameters(self) -> dict:
-        """Output hyperparamers as a single dict"""
+        """Output hyper-parameters as a single dict"""
         return {
             "model":     {"class": str(self._model_class),     **self._model_kwargs},
             "optimizer": {"class": str(self._optimizer_class), **self._optimizer_kwargs},
@@ -254,7 +254,7 @@ def build_tuning_strategy(
     Build a tuning strategy using builders of other underlying strategies
     """
 
-    # Disable loggers of undrlying methods this avoids us having multiple logs of
+    # Disable loggers of underlying methods this avoids us having multiple logs of
     # the same things. We do this because the stability tuning strategy is
     # responsible for logging
     reference.without_logger()

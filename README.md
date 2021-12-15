@@ -33,49 +33,49 @@
 
 - Run naive fine tuning on the mnist dataset
     ```
-    ./experiment_cli.py mnist naive constant
+    python experiment_cli.py mnist naive constant
     ```
 
 - Run and output tensorboard logs
     ```
-    ./experiment_cli.py --tb-logdir tb_data/mnist mnist naive constant
+    python experiment_cli.py --tb-logdir tb_data/mnist mnist naive constant
     ```
 - Run with a regularization strategy.
     ```
-    ./experiment_cli.py mnist ewc --ewc-lambda 128000 control
+    python experiment_cli.py mnist ewc --ewc-lambda 128000 control
     ```
 - Run with tuned regularization strategy
     - **Semi-Online Stability Decay** - Decrease stability when it is too high
         ```
-        ./experiment_cli.py mnist \
+        python experiment_cli.py mnist \
             ewc   --ewc-lambda  500000 \
             decay --drop-margin 0.4 --decay-factor 0.8
         ```
     - **Semi-Online Stability Tune** - Increase and decrease stability to find a *"goldilocks"* zone
         ```
-        ./experiment_cli.py mnist \
+        python experiment_cli.py mnist \
             ewc   --ewc-lambda 10000 \
             tune  --drop-margin 0.3 --change-factor 0.2
         ```
     - **Cybernetic Online Stability Tuning** - Continuously increase and decrease stability to find a *goldilocks* zone fully online.
         ```
-        ./experiment_cli.py mnist \
+        python experiment_cli.py mnist \
             ewc              --ewc-lambda 0 \
             cybernetic-tune  --p-gain 1000 --set-point 0.3
         ```
     > **Any tuning algorithm works with any underlying regularization strategy**
 - Run COST-LR.
     ```
-    ./experiment_cli.py mnist \
+    python experiment_cli.py mnist \
         naive cybernetic-tune --p-gain -1e-4 --set-point 0.3
     ```
     > Negative p-gain is important since lower learning rates are more stable
 
 - Randomize experience
     ```
-    ./experiment_cli.py --rand True mnist naive constant
-    ./experiment_cli.py --rand True cifar naive constant
-    ./experiment_cli.py --core-run $(($RANDOM % 10)) --rand True core50  naive constant
+    python experiment_cli.py --rand True mnist naive constant
+    python experiment_cli.py --rand True cifar naive constant
+    python experiment_cli.py --core-run $(($RANDOM % 10)) --rand True core50  naive constant
     ```
     > CORe50 has pre-defined random runs 0-9
 
@@ -84,7 +84,7 @@
 ### Grid Search
 To run our grid search.
 ```
-python ./run_experiments.py --logdir tb_data --grid-search True
+python run_experiments.py --logdir tb_data --grid-search True
 ```
 **Parameters Held Constant**
 |       | Learning Rate | Batch Size | Epochs |
@@ -126,5 +126,5 @@ python ./run_experiments.py --logdir tb_data --grid-search True
 ### Run 10x runs
 To run our 10 runs with our parameters
 ```
-python ./run_experiments.py --logdir tb_data --mnist True --cifar True --core True
+python run_experiments.py --logdir tb_data --mnist True --cifar True --core True
 ```

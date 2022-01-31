@@ -24,11 +24,13 @@
       conda env update --file environment.yml
       ```
 
-> (Optional) **CORe50** by default has a very large test-set we sub-sampled this for speed. This can be conducted by running the following on each `test_filelist.txt` in `batches_filelists/NC_inc/run*`.
+> (Optional) **CORe50** by default has a very large test-set we sub-sampled this for speed. This can be conducted by running the following on each `test_filelist.txt` in `batches_filelists/NC_inc/run*`. This follows the recomendations by Lomonaco et al. (2020) "we sub-sampled the test set by selecting
+1 frame every second (from the original 20 fps)" (Lomonaco et al., 2020).
 >
 > ```sh
 > cp test_filelist.txt test_filelist.txt.old && awk 'NR%20==0' test_filelist.> txt.old > test_filelist.txt
 > ```
+> Lomonaco, V., Maltoni, D., & Pellegrini, L. (2020). Rehearsal-Free Continual Learning over Small Non-I.I.D. Batches. ArXiv:1907.03799 [Cs, Stat]. http://arxiv.org/abs/1907.03799
 
 ## Usage
 
@@ -141,3 +143,7 @@ To run our 10 runs with our parameters
 ```
 python run_experiments.py --logdir tb_data --mnist True --cifar True --core True
 ```
+
+
+
+

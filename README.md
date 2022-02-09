@@ -133,7 +133,7 @@ python run_experiments.py --logdir tb_data --grid-search True
 | EWC  | 5000, 10000         | 0.1, 0.2, 0.3, 0.4 |
 | SI   | 1000, 2000          | ^                  |
 | LWF  | 1, 2                | ^                  |
-| COST | -1e-3, -1e-4, -1e-5 | ^                  |
+| COST-LR | -1e-3, -1e-4, -1e-5 | ^                  |
 
 
 ### Run 10x runs
